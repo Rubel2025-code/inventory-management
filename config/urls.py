@@ -7,4 +7,5 @@ urlpatterns = [
     path('', include('inventory.urls')),
     path('login/', auth_views.LoginView.as_view(template_name='inventory/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
+    path('cart/', include('orders.urls')),  # cart/order app (optional path prefix)
 ]

@@ -1,11 +1,20 @@
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .models import Product
 from django.http import HttpResponse
+from django.contrib.admin.views.decorators import staff_member_required
 
+
+@login_required
 def product_list(request):
     products = Product.objects.all()
-    return render(request, 'inventory/product_list.html', {'products': products})
+    context = {
+        'products': products,
+        'is_admin': request.user.is_staff or request.user.is_superuser
+    }
+    return render(request, 'inventory/product_list.html', context)
 from django.shortcuts import render, redirect
 from .models import Product
 from django import forms
@@ -14,7 +23,7 @@ class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
         fields = ['name', 'category', 'quantity', 'price']
-
+@staff_member_required
 def add_product(request):
     if request.method == 'POST':
         form = ProductForm(request.POST)
@@ -24,6 +33,7 @@ def add_product(request):
     else:
         form = ProductForm()
     return render(request, 'inventory/add_product.html', {'form': form})
+@staff_member_required
 def edit_product(request, pk):
     product = Product.objects.get(id=pk)
     if request.method == 'POST':
@@ -34,6 +44,7 @@ def edit_product(request, pk):
     else:
         form = ProductForm(instance=product)
     return render(request, 'inventory/edit_product.html', {'form': form})
+@staff_member_required
 def delete_product(request, pk):
     product = Product.objects.get(id=pk)
     if request.method == 'POST':
@@ -54,3 +65,13 @@ def export_csv(request):
         writer.writerow([p.name, p.category, p.quantity, p.price, p.added_on])
 
     return response
+def register(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('product_list')
+    else:
+        form = UserCreationForm()
+    return render(request, 'inventory/register.html', {'form': form})
