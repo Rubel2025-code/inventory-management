@@ -27,7 +27,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['inventory-management-begin.onrender.com', '127.0.0.1', 'localhost']
 
-LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = '/login/'
+
 
 
 
