@@ -72,6 +72,8 @@ def register(request):
             user = form.save()
             login(request, user)
             return redirect('product_list')
+        else:
+            print("❌ Form errors:", form.errors)  # Add this line to debug
     else:
         form = UserCreationForm()
     return render(request, 'inventory/register.html', {'form': form})
