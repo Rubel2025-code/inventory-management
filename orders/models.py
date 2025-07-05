@@ -16,6 +16,7 @@ class CartItem(models.Model):
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     transaction_number = models.CharField(max_length=100)
+    items = models.ManyToManyField('orders.CartItem')
     created_at = models.DateTimeField(auto_now_add=True)
     STATUS_CHOICES = (
         ('Pending', 'Pending'),

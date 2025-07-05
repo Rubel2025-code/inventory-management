@@ -1,6 +1,6 @@
 from inventory.models import Product
 from django.views.decorators.http import require_POST
-
+from django.contrib import messages  
 from .models import Cart, CartItem, Order
 from .forms import PaymentForm
 from django.contrib.auth.decorators import login_required
@@ -42,14 +42,16 @@ def make_payment(request):
     if request.method == 'POST':
         form = PaymentForm(request.POST)
         if form.is_valid():
-            transaction_id = form.cleaned_data['transaction_id']
-            order = Order.objects.create(user=request.user, transaction_id=transaction_id)
-            order.items.set(items)
+            order = form.save(commit=False)
+            order.user = request.user
             order.save()
+            order.items.set(items)
             cart.delete()  # Clear cart after order placed
+
+            messages.success(request, "✅ Payment submitted successfully! Your order is pending confirmation.")
             return redirect('cart_view')
     else:
-        form = PaymentForm()
+        print("Form is NOT valid:", form.errors)
 
     total = sum(item.subtotal() for item in items)
     return render(request, 'orders/make_payment.html', {'form': form, 'items': items, 'total': total})

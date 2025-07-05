@@ -9,8 +9,11 @@
         {% csrf_token %}
 
         <div class="mb-3">
-            <label for="id_transaction_id" class="form-label">Transaction Number</label>
-            <input type="text" name="transaction_id" id="id_transaction_id" class="form-control" required>
+            {{ form.transaction_number.label_tag }}
+            {{ form.transaction_number }}
+            {% if form.transaction_number.errors %}
+                <div class="text-danger">{{ form.transaction_number.errors }}</div>
+            {% endif %}
         </div>
 
         <button type="submit" class="btn btn-success">✅ Submit Payment</button>

@@ -29,7 +29,6 @@ ALLOWED_HOSTS = ['inventory-management-begin.onrender.com', '127.0.0.1', 'localh
 
 
 # ✅ Login and Logout URLs
-LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'  # After login, go to product list
 LOGOUT_REDIRECT_URL = '/login/'  # After logout, redirect to login
 
