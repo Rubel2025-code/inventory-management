@@ -1,9 +1,10 @@
-from django.shortcuts import render, redirect, get_object_or_404
 from inventory.models import Product
-from .models import Cart, CartItem
-from django.contrib.auth.decorators import login_required
-
 from django.views.decorators.http import require_POST
+
+from .models import Cart, CartItem, Order
+from .forms import PaymentForm
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect, get_object_or_404
 
 @require_POST
 @login_required
@@ -31,3 +32,39 @@ def cart_view(request):
         'items': items,
         'total': total,
     })
+
+
+@login_required
+def make_payment(request):
+    cart, _ = Cart.objects.get_or_create(user=request.user)
+    items = CartItem.objects.filter(cart=cart)
+
+    if request.method == 'POST':
+        form = PaymentForm(request.POST)
+        if form.is_valid():
+            transaction_id = form.cleaned_data['transaction_id']
+            order = Order.objects.create(user=request.user, transaction_id=transaction_id)
+            order.items.set(items)
+            order.save()
+            cart.delete()  # Clear cart after order placed
+            return redirect('cart_view')
+    else:
+        form = PaymentForm()
+
+    total = sum(item.subtotal() for item in items)
+    return render(request, 'orders/make_payment.html', {'form': form, 'items': items, 'total': total})
+
+@login_required
+def admin_order_list(request):
+    if not request.user.is_staff:
+        return redirect('product_list')
+    orders = Order.objects.all().order_by('-created_at')
+    return render(request, 'orders/admin_orders.html', {'orders': orders})
+
+@login_required
+def update_order_status(request, order_id, status):
+    if request.user.is_staff:
+        order = get_object_or_404(Order, id=order_id)
+        order.status = status
+        order.save()
+    return redirect('admin_order_list')

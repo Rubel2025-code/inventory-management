@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}Your Page Title{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <h3>Make Payment</h3>
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="id_transaction_id" class="form-label">Enter Transaction Number</label>
+            {{ form.transaction_id }}
+        </div>
+        <button type="submit" class="btn btn-primary">Submit Payment</button>
+    </form>
+
+    <hr>
+    <h5>Items in Your Order:</h5>
+    <ul>
+        {% for item in items %}
+        <li>{{ item.product.name }} - {{ item.quantity }} pcs</li>
+        {% endfor %}
+    </ul>
+    <strong>Total: ৳{{ total }}</strong>
+</div>
+{% endblock %}

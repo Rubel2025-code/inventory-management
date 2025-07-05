@@ -12,3 +12,14 @@ class CartItem(models.Model):
 
     def subtotal(self):
         return self.product.price * self.quantity
+
+class Order(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    transaction_number = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
+    STATUS_CHOICES = (
+        ('Pending', 'Pending'),
+        ('Confirmed', 'Confirmed'),
+        ('Rejected', 'Rejected'),
+    )
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Pending')
