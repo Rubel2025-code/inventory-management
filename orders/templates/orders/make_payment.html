@@ -1,25 +1,32 @@
 {% extends 'base.html' %}
 {% block title %}Your Page Title{% endblock %}
-{% block content %}
-<div class="container mt-4">
-    <h3>Make Payment</h3>
 
+{% block content %}
+<div class="container mt-5">
+    <h3>💳 Make Payment</h3>
+    <hr>
     <form method="post">
         {% csrf_token %}
         <div class="mb-3">
-            <label for="id_transaction_id" class="form-label">Enter Transaction Number</label>
+            <label for="transaction_id" class="form-label">Transaction Number</label>
             {{ form.transaction_id }}
         </div>
-        <button type="submit" class="btn btn-primary">Submit Payment</button>
+        <button type="submit" class="btn btn-success">Submit Payment</button>
+        <a href="{% url 'cart_view' %}" class="btn btn-secondary ms-2">Back to Cart</a>
     </form>
 
     <hr>
-    <h5>Items in Your Order:</h5>
-    <ul>
+    <h5>🧾 Cart Summary</h5>
+    <ul class="list-group">
         {% for item in items %}
-        <li>{{ item.product.name }} - {{ item.quantity }} pcs</li>
+        <li class="list-group-item d-flex justify-content-between">
+            {{ item.product.name }} × {{ item.quantity }}
+            <span>৳{{ item.subtotal }}</span>
+        </li>
         {% endfor %}
+        <li class="list-group-item fw-bold d-flex justify-content-between">
+            Total: <span>৳{{ total }}</span>
+        </li>
     </ul>
-    <strong>Total: ৳{{ total }}</strong>
 </div>
 {% endblock %}
