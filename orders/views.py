@@ -36,6 +36,10 @@ def cart_view(request):
 
 @login_required
 def make_payment(request):
+    cart, _ = Cart.objects.get_or_create(user=request.user)
+    items = CartItem.objects.filter(cart=cart)
+    total = sum(item.subtotal() for item in items)
+
     if request.method == 'POST':
         form = PaymentForm(request.POST)
         if form.is_valid():
@@ -47,9 +51,14 @@ def make_payment(request):
         else:
             messages.error(request, 'Invalid payment form. Please try again.')
     else:
-        form = PaymentForm()  # ✅ Fix: this line was missing in your GET request
+        form = PaymentForm()
 
-    return render(request, 'make_payment.html', {'form': form})
+    return render(request, 'orders/make_payment.html', {
+        'form': form,
+        'items': items,
+        'total': total,
+    })
+
 
 @login_required
 def admin_order_list(request):
