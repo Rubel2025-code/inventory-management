@@ -46,8 +46,9 @@ def make_payment(request):
             order = form.save(commit=False)
             order.user = request.user
             order.save()
-            messages.success(request, 'Payment submitted successfully!')
-            return redirect('cart')
+            CartItem.objects.filter(cart__user=request.user).delete()
+            return render(request, 'orders/payment_success.html')
+
         else:
             messages.error(request, 'Invalid payment form. Please try again.')
     else:
