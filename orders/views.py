@@ -46,9 +46,11 @@ def make_payment(request):
             order = form.save(commit=False)
             order.user = request.user
             order.save()
-            CartItem.objects.filter(cart__user=request.user).delete()
-            return render(request, 'orders/payment_success.html')
 
+            # Optional: Clear cart after successful payment
+            items.delete()
+
+            return render(request, 'orders/payment_success.html')  # ✅ Redirect here instead of cart_view
         else:
             messages.error(request, 'Invalid payment form. Please try again.')
     else:
@@ -59,6 +61,7 @@ def make_payment(request):
         'items': items,
         'total': total,
     })
+
 
 
 @login_required

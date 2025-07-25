@@ -2,9 +2,8 @@
 
 {% block content %}
 <div class="container mt-5 text-center">
-    <h2>✅ Payment Successful!</h2>
-    <p class="lead mt-3">Your order has been placed successfully. Thanks for joining us! 😊</p>
-
-    <a href="{% url 'product_list' %}" class="btn btn-primary mt-4">🔙 Back to Products</a>
+    <h3 class="text-success">✅ Payment Successful!</h3>
+    <p>Your items were submitted successfully. Thanks for joining us!</p>
+    <a href="{% url 'product_list' %}" class="btn btn-primary mt-3">🔙 Go Back to Products</a>
 </div>
 {% endblock %}
