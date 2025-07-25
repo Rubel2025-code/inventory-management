@@ -36,30 +36,42 @@ def cart_view(request):
 
 @login_required
 def make_payment(request):
-    cart, _ = Cart.objects.get_or_create(user=request.user)
-    items = CartItem.objects.filter(cart=cart)
-    total = sum(item.subtotal() for item in items)
+    cart, created = Cart.objects.get_or_create(user=request.user)
+    cart_items = CartItem.objects.filter(cart=cart)
 
     if request.method == 'POST':
         form = PaymentForm(request.POST)
         if form.is_valid():
-            order = form.save(commit=False)
-            order.user = request.user
+            order = Order.objects.create(
+                user=request.user,
+                transaction_number=form.cleaned_data['transaction_number']
+            )
+            order.items.set(cart_items)
             order.save()
 
-            # Optional: Clear cart after successful payment
-            items.delete()
+            # ✅ Reduce product stock
+            for item in cart_items:
+                product = item.product
+                if product.stock >= item.quantity:
+                    product.stock -= item.quantity
+                    product.save()
+                else:
+                    messages.error(request, f"❌ Not enough stock for {product.name}.")
+                    return redirect('cart_view')
 
-            return render(request, 'orders/payment_success.html')  # ✅ Redirect here instead of cart_view
-        else:
-            messages.error(request, 'Invalid payment form. Please try again.')
+            # ✅ Clear the cart
+            cart_items.delete()
+
+            return render(request, 'payment_success.html', {'order': order})
     else:
         form = PaymentForm()
 
-    return render(request, 'orders/make_payment.html', {
+    total = sum(item.subtotal() for item in cart_items)
+
+    return render(request, 'make_payment.html', {
         'form': form,
-        'items': items,
-        'total': total,
+        'items': cart_items,
+        'total': total
     })
 
 

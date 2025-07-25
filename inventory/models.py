@@ -6,6 +6,7 @@ class Product(models.Model):
     quantity = models.PositiveIntegerField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
     added_on = models.DateTimeField(auto_now_add=True)
+    stock = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.name
