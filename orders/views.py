@@ -36,25 +36,20 @@ def cart_view(request):
 
 @login_required
 def make_payment(request):
-    cart, _ = Cart.objects.get_or_create(user=request.user)
-    items = CartItem.objects.filter(cart=cart)
-
     if request.method == 'POST':
         form = PaymentForm(request.POST)
         if form.is_valid():
             order = form.save(commit=False)
             order.user = request.user
             order.save()
-            order.items.set(items)
-            cart.delete()  # Clear cart after order placed
-
-            messages.success(request, "✅ Payment submitted successfully! Your order is pending confirmation.")
-            return redirect('cart_view')
+            messages.success(request, 'Payment submitted successfully!')
+            return redirect('cart')
+        else:
+            messages.error(request, 'Invalid payment form. Please try again.')
     else:
-        print("Form is NOT valid:", form.errors)
+        form = PaymentForm()  # ✅ Fix: this line was missing in your GET request
 
-    total = sum(item.subtotal() for item in items)
-    return render(request, 'orders/make_payment.html', {'form': form, 'items': items, 'total': total})
+    return render(request, 'make_payment.html', {'form': form})
 
 @login_required
 def admin_order_list(request):
