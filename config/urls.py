@@ -3,7 +3,8 @@ from django.urls import path, include
 from django.contrib.auth import views as auth_views
 from inventory import views as inventory_views  # if not already imported
 from django.urls import path
-from . import views
+from orders import views
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('inventory.urls')),
