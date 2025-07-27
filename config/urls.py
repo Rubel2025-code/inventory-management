@@ -2,7 +2,8 @@ from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
 from inventory import views as inventory_views  # if not already imported
-
+from django.urls import path
+from . import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('inventory.urls')),
@@ -13,4 +14,5 @@ urlpatterns = [
 
     # ✅ Updated LogoutView with GET allowed
     path('logout/', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
+    path('remove/<int:item_id>/', views.remove_cart_item, name='remove_cart_item'),
 ]

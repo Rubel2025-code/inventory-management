@@ -32,7 +32,12 @@ def cart_view(request):
         'items': items,
         'total': total,
     })
-
+@login_required
+def remove_cart_item(request, item_id):
+    item = get_object_or_404(CartItem, id=item_id, cart__user=request.user)
+    item.delete()
+    messages.success(request, "✅ Item removed from cart.")
+    return redirect('cart_view')
 
 @login_required
 def make_payment(request):

@@ -31,6 +31,9 @@
                     <td>{{ item.quantity }}</td>
                     <td>৳{{ item.product.price }}</td>
                     <td>৳{{ item.subtotal }}</td>
+					<td>
+    <a href="{% url 'remove_cart_item' item.id %}" class="btn btn-danger btn-sm">Remove</a>
+  </td>
                 </tr>
                 {% endfor %}
             </tbody>
