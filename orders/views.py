@@ -68,7 +68,7 @@ def make_payment(request):
 
     total = sum(item.subtotal() for item in cart_items)
 
-    return render(request, 'make_payment.html', {
+    return render(request, 'orders/make_payment.html', {
         'form': form,
         'items': cart_items,
         'total': total
