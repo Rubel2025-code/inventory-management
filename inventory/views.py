@@ -14,7 +14,7 @@ def product_list(request):
         'products': products,
         'is_admin': request.user.is_staff or request.user.is_superuser
     }
-    return render(request, 'inventory/product_list.html', context)
+    return render(request, 'inventory/product_list.html', {'products': products})
 from django.shortcuts import render, redirect
 from .models import Product
 from django import forms
