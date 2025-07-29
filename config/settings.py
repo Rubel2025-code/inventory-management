@@ -57,10 +57,9 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 # ✅ PostgreSQL database config (Render provides DATABASE_URL)
 DATABASES = {
-    'default': dj_database_url.config(
-        default='sqlite:///' + str(BASE_DIR / 'db.sqlite3')  # fallback to SQLite if DATABASE_URL is missing
-    )
+    'default': dj_database_url.config(conn_max_age=600)
 }
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
