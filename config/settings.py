@@ -57,7 +57,9 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 # ✅ PostgreSQL database config (Render provides DATABASE_URL)
 DATABASES = {
-    'default': dj_database_url.config(conn_max_age=600)
+    'default': dj_database_url.config(
+        default='sqlite:///' + str(BASE_DIR / 'db.sqlite3')  # fallback if DATABASE_URL is not set
+    )
 }
 
 
