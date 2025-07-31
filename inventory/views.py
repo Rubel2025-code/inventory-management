@@ -11,10 +11,11 @@ from django.contrib.admin.views.decorators import staff_member_required
 def product_list(request):
     products = Product.objects.all()
     context = {
-        'products': products,
+        'products': products,  # ✅ Product list with real-time stock
         'is_admin': request.user.is_staff or request.user.is_superuser
     }
-    return render(request, 'inventory/product_list.html', {'products': products})
+    return render(request, 'inventory/product_list.html', context)  # ✅ Use context
+
 from django.shortcuts import render, redirect
 from .models import Product
 from django import forms
