@@ -20,7 +20,3 @@ class OrderAdmin(admin.ModelAdmin):
         """Show ordered products and quantities in admin list"""
         return ", ".join([f"{item.product.name} ({item.quantity})" for item in obj.items.all()])
     ordered_items.short_description = "Ordered Items"
-
-admin.site.register(Order, OrderAdmin)
-admin.site.register(Cart)
-admin.site.register(CartItem)
