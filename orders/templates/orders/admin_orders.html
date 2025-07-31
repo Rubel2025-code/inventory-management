@@ -33,6 +33,8 @@
                     <ul>
                         {% for item in order.items.all %}
                         <li>{{ item.product.name }} ({{ item.quantity }})</li>
+						{% empty %}
+                        <li>No items</li>
                         {% endfor %}
                     </ul>
                 </td>

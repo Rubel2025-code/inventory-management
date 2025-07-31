@@ -18,9 +18,14 @@ class Order(models.Model):
     transaction_number = models.CharField(max_length=100)
     items = models.ManyToManyField('orders.CartItem')
     created_at = models.DateTimeField(auto_now_add=True)
+
     STATUS_CHOICES = (
         ('Pending', 'Pending'),
         ('Confirmed', 'Confirmed'),
         ('Rejected', 'Rejected'),
     )
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Pending')
+
+    def ordered_items_list(self):
+        """Return product names and quantities for display"""
+        return [f"{item.product.name} ({item.quantity})" for item in self.items.all()]
