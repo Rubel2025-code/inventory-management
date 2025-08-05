@@ -1,17 +1,17 @@
-{% extends 'base.html' %}
-{% block content %}
-<div class="container mt-4">
-    <h3>📦 Orders (Admin)</h3>
+{% extends "base.html" %}
 
-    {% if orders %}
-    <table class="table table-striped text-center">
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">📋 Manage Orders</h2>
+
+    <table class="table table-bordered table-hover text-center">
         <thead class="table-dark">
             <tr>
                 <th>User</th>
-                <th>Transaction ID</th>
-                <th>Status</th>
+                <th>Transaction Number</th>
                 <th>Ordered Items</th>
-                <th>Date</th>
+                <th>Status</th>
+                <th>Created At</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -19,36 +19,37 @@
             {% for order in orders %}
             <tr>
                 <td>{{ order.user.username }}</td>
-                <td>{{ order.transaction_id }}</td>
+                <td>{{ order.transaction_number }}</td>
                 <td>
-                    {% if order.status == 'pending' %}
+                    {% for item in order.items.all %}
+                        {{ item.product.name }} ({{ item.quantity }})<br>
+                    {% empty %}
+                        <span class="text-muted">No items</span>
+                    {% endfor %}
+                </td>
+                <td>
+                    {% if order.status == "Pending" %}
                         <span class="badge bg-warning text-dark">Pending</span>
-                    {% elif order.status == 'confirmed' %}
+                    {% elif order.status == "Confirmed" %}
                         <span class="badge bg-success">Confirmed</span>
-                    {% else %}
+                    {% elif order.status == "Rejected" %}
                         <span class="badge bg-danger">Rejected</span>
                     {% endif %}
                 </td>
-                <td>
-                    <ul>
-                        {% for item in order.items.all %}
-                        <li>{{ item.product.name }} ({{ item.quantity }})</li>
-						{% empty %}
-                        <li>No items</li>
-                        {% endfor %}
-                    </ul>
-                </td>
                 <td>{{ order.created_at|date:"Y-m-d H:i" }}</td>
                 <td>
-                    <a href="{% url 'update_order_status' order.id 'confirmed' %}" class="btn btn-sm btn-success">Confirm</a>
-                    <a href="{% url 'update_order_status' order.id 'rejected' %}" class="btn btn-sm btn-danger">Reject</a>
+                    {% if order.status != "Confirmed" %}
+                        <a href="{% url 'update_order_status' order.id 'Confirmed' %}" 
+                           class="btn btn-sm btn-success">✅ Confirm</a>
+                    {% endif %}
+                    {% if order.status != "Rejected" %}
+                        <a href="{% url 'update_order_status' order.id 'Rejected' %}" 
+                           class="btn btn-sm btn-danger">❌ Reject</a>
+                    {% endif %}
                 </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
-    {% else %}
-    <p>No orders found.</p>
-    {% endif %}
 </div>
 {% endblock %}
