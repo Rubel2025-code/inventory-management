@@ -58,7 +58,7 @@ def make_payment(request):
             for item in cart_items:
                 product = item.product
                 if product.stock >= item.quantity:
-                    product.stock -= item.quantity
+                    product.stock -= item.quantity  # ✅ Reduce from stock only
                     product.save()
                 else:
                     messages.error(request, f"❌ Not enough stock for {product.name}.")
