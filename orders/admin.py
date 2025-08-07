@@ -12,7 +12,7 @@ class CartItemAdmin(admin.ModelAdmin):
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     list_display = ('user', 'transaction_number', 'status', 'created_at', 'ordered_items')
-    list_editable = ('status',)  # ✅ Make status editable in list view
+    list_editable = ('status',)  # Make status editable in list view
     list_filter = ('status', 'created_at')
     search_fields = ('transaction_number', 'user__username')
 
