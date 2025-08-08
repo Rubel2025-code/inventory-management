@@ -16,7 +16,8 @@ urlpatterns = [
     path('login/', auth_views.LoginView.as_view(template_name='inventory/login.html'), name='login'),
 
     # ✅ Proper logout redirect to login page
-    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('logout/', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
+
 
     # Remove cart item manually
     path('remove/<int:item_id>/', order_views.remove_cart_item, name='remove_cart_item'),

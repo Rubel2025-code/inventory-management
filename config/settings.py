@@ -13,6 +13,7 @@ ALLOWED_HOSTS = ['inventory-management-begin.onrender.com', '127.0.0.1', 'localh
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/login/'
 LOGIN_URL = '/login/'
+LOGOUT_REDIRECT_URL = 'login'  # where to go after logout
 
 # ✅ Installed apps
 INSTALLED_APPS = [
