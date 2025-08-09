@@ -11,24 +11,39 @@ from .forms import PaymentForm
 @login_required
 def add_to_cart(request, product_id):
     product = get_object_or_404(Product, id=product_id)
-    quantity = int(request.POST.get("quantity", 1))
+    try:
+        quantity = int(request.POST.get("quantity", 1))
+    except (ValueError, TypeError):
+        quantity = 1
 
+    if quantity <= 0:
+        quantity = 1
+
+    # check stock first
     if product.stock < quantity:
         messages.error(request, f"❌ Not enough stock for {product.name}. Only {product.stock} left.")
         return redirect("product_list")
 
     cart, _ = Cart.objects.get_or_create(user=request.user)
-    item, created = CartItem.objects.get_or_create(cart=cart, product=product)
 
-    if created:
-        item.quantity = quantity
-    else:
+    # IMPORTANT: Provide defaults so DB insert includes a non-null quantity
+    item, created = CartItem.objects.get_or_create(
+        cart=cart,
+        product=product,
+        defaults={'quantity': quantity}
+    )
+
+    if not created:
+        # if already exists, ensure adding quantity won't exceed stock
         if product.stock < item.quantity + quantity:
             messages.error(request, f"❌ Cannot add more than available stock for {product.name}.")
             return redirect("product_list")
         item.quantity += quantity
+        item.save()
+    else:
+        # created with defaults already saved
+        pass
 
-    item.save()
     messages.success(request, f"✅ Added {quantity} × {product.name} to cart.")
     return redirect("cart_view")
 
