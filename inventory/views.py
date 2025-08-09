@@ -38,7 +38,7 @@ def add_product(request):
 def edit_product(request, pk):
     product = Product.objects.get(id=pk)
     if request.method == 'POST':
-        form = ProductForm(request.POST, instance=product,request.FILES)
+        form = ProductForm(request.POST,request.FILES, instance=product)
         if form.is_valid():
             form.save()
             return redirect('product_list')
