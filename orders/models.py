@@ -13,6 +13,9 @@ class CartItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
 
+    def subtotal(self):
+        return self.product.price * self.quantity
+
     def __str__(self):
         return f"{self.quantity} × {self.product.name}"
 

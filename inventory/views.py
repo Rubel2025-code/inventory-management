@@ -63,7 +63,7 @@ def export_csv(request):
     writer.writerow(['Name', 'Category', 'Quantity', 'Price', 'Added On'])
 
     for p in products:
-        writer.writerow([p.name, p.category, p.quantity, p.price, p.added_on])
+        writer.writerow([p.name, p.category, p.stock, p.price, p.added_on])
 
     return response
 def register(request):
