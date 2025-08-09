@@ -27,10 +27,10 @@ class Order(models.Model):
     ]
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    cart = models.OneToOneField(Cart, on_delete=models.CASCADE)
+    items = models.ManyToManyField(CartItem, blank=True)  # ✅ store ordered items
     transaction_number = models.CharField(max_length=100)
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Pending')
+    status = models.CharField(max_length=20, default="Pending")
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Order #{self.id} by {self.user.username}"
+        return f"Order #{self.id} - {self.user.username}"
