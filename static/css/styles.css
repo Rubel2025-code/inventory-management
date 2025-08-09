@@ -1,0 +1,129 @@
+/* === Global Styling === */
+body {
+    background: linear-gradient(135deg, #f8f9fa, #e8f0ff);
+    font-family: 'Poppins', sans-serif;
+    color: #333;
+    min-height: 100vh;
+    animation: fadeIn 0.8s ease-in;
+    margin: 0;
+}
+
+/* === Navbar Styling === */
+.navbar {
+    background: linear-gradient(90deg, #4b6cb7, #182848);
+    box-shadow: 0px 3px 8px rgba(0,0,0,0.2);
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.navbar.scrolled {
+    background: linear-gradient(90deg, #3551a0, #121a3a);
+    box-shadow: 0px 6px 15px rgba(0,0,0,0.3);
+}
+
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.4rem;
+}
+
+/* === Table Styling === */
+.table {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    transition: transform 0.2s ease;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(75, 108, 183, 0.1);
+    transform: scale(1.01);
+}
+
+/* === Table Head === */
+.table thead {
+    background: #4b6cb7;
+    color: white;
+}
+
+/* === Buttons === */
+.btn {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border-radius: 8px;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0px 4px 8px rgba(0,0,0,0.15);
+}
+
+/* === Login / Form Styling === */
+form {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.05);
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+input, select, textarea {
+    border-radius: 8px !important;
+    border: 1px solid #ccc;
+    padding: 8px;
+    transition: all 0.3s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: #4b6cb7;
+    box-shadow: 0 0 8px rgba(75, 108, 183, 0.3);
+}
+
+/* === Low Stock Alert Pulse === */
+.text-danger.fw-bold {
+    animation: pulse 1s infinite alternate;
+}
+
+@keyframes pulse {
+    from { color: #d9534f; }
+    to { color: #ff6b6b; }
+}
+
+/* === Out of Stock Styling === */
+.btn-secondary[disabled] {
+    background: #ccc;
+    border: none;
+}
+
+/* === Card Animation === */
+.product-card {
+    transition: all 0.3s ease;
+}
+
+.product-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.1);
+}
+
+/* === Fade-in Animation === */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* === Link Hover Animation === */
+a {
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #4b6cb7;
+}
+
+/* === Footer Styling (optional) === */
+footer {
+    background: linear-gradient(90deg, #182848, #4b6cb7);
+    color: white;
+    padding: 10px;
+    text-align: center;
+    font-size: 0.9rem;
+}
