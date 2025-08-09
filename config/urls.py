@@ -22,3 +22,5 @@ urlpatterns = [
     # Remove cart item manually
     path('remove/<int:item_id>/', order_views.remove_cart_item, name='remove_cart_item'),
 ]
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

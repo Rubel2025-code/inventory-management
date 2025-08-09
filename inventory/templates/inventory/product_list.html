@@ -43,6 +43,14 @@
                 {% for product in products %}
                 <tr class="product-card">
                     <td class="fw-bold">{{ product.name }}</td>
+					<td>
+    {% if product.image %}
+        <img src="{{ product.image.url }}" alt="{{ product.name }}" width="60">
+    {% else %}
+        <span class="text-muted">No image</span>
+    {% endif %}
+</td>
+
                     <td>{{ product.category }}</td>
 
                     <!-- ✅ Stock Display -->

@@ -23,11 +23,11 @@ from django import forms
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ['name', 'category', 'stock', 'price']
+        fields = ['name', 'category', 'stock', 'price','image']
 @staff_member_required
 def add_product(request):
     if request.method == 'POST':
-        form = ProductForm(request.POST)
+        form = ProductForm(request.POST,request.FILES)
         if form.is_valid():
             form.save()
             return redirect('product_list')
@@ -38,7 +38,7 @@ def add_product(request):
 def edit_product(request, pk):
     product = Product.objects.get(id=pk)
     if request.method == 'POST':
-        form = ProductForm(request.POST, instance=product)
+        form = ProductForm(request.POST, instance=product,request.FILES)
         if form.is_valid():
             form.save()
             return redirect('product_list')
