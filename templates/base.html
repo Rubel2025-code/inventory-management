@@ -76,6 +76,31 @@
         }
     });
 </script>
+<!-- Image Modal -->
+<div id="imageModal" class="modal">
+    <span class="close" onclick="closeImageModal()">&times;</span>
+    <img class="modal-content" id="modalImage">
+    <div id="caption"></div>
+</div>
+<script>
+function openImageModal(imageSrc, captionText) {
+    document.getElementById("imageModal").style.display = "block";
+    document.getElementById("modalImage").src = imageSrc;
+    document.getElementById("caption").innerText = captionText;
+}
+
+function closeImageModal() {
+    document.getElementById("imageModal").style.display = "none";
+}
+
+// Close modal on click outside image
+window.onclick = function(event) {
+    const modal = document.getElementById("imageModal");
+    if (event.target === modal) {
+        modal.style.display = "none";
+    }
+};
+</script>
 
 </body>
 </html>
