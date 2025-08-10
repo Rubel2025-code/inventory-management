@@ -3,72 +3,141 @@
 
 {% block content %}
 <div class="container py-4">
-    <h2 class="mb-4 text-center">➕ Add New Product</h2>
 
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <form method="POST" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        
-                        <div class="mb-3">
-                            <label class="form-label">Product Name</label>
-                            {{ form.name }}
-                        </div>
+    <!-- Page Header + Admin Buttons -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">🛒 Product Catalog</h2>
+        {% if is_admin %}
+        <div class="btn-group">
+            <a href="{% url 'add_product' %}" class="btn btn-primary">➕ Add Product</a>
+            <a href="{% url 'export_csv' %}" class="btn btn-success">⬇️ Export CSV</a>
+            <a href="{% url 'admin_order_list' %}" class="btn btn-warning">📋 View Orders</a>
+        </div>
+        {% endif %}
+    </div>
 
-                        <div class="mb-3">
-                            <label class="form-label">Category</label>
-                            {{ form.category }}
-                        </div>
+    <!-- Product Grid -->
+    <div class="row">
+        {% for product in products %}
+        <div class="col-md-4 mb-4">
+            <div class="card product-card h-100">
+                {% if product.image %}
+                    <img src="{{ product.image.url }}" 
+                         alt="{{ product.name }}" 
+                         class="product-image" 
+                         onclick="openImageModal('{{ product.image.url }}', '{{ product.name }}')">
+                {% else %}
+                    <img src="{% static 'img/no-image.png' %}" 
+                         alt="No Image" 
+                         class="product-image">
+                {% endif %}
 
-                        <div class="mb-3">
-                            <label class="form-label">Stock</label>
-                            {{ form.stock }}
-                        </div>
+                <div class="card-body text-center d-flex flex-column">
+                    <h5 class="card-title">{{ product.name }}</h5>
+                    <p class="text-muted">{{ product.category }}</p>
 
-                        <div class="mb-3">
-                            <label class="form-label">Price</label>
-                            {{ form.price }}
-                        </div>
+                    <!-- Stock display -->
+                    <p>
+                        {% if product.stock == 0 %}
+                            <span class="text-danger fw-bold">❌ Out of Stock</span>
+                        {% elif product.stock < 5 %}
+                            <span class="text-warning fw-bold">{{ product.stock }} ⚠️ Low</span>
+                        {% else %}
+                            Stock: {{ product.stock }}
+                        {% endif %}
+                    </p>
 
-                        <div class="mb-3">
-                            <label class="form-label">Product Image</label>
-                            {{ form.image }}
-                            <div class="mt-2">
-                                <img id="imagePreview" src="{% static 'img/no-image.png' %}" 
-                                     alt="Preview" class="img-fluid rounded" style="max-height: 200px;">
-                            </div>
-                        </div>
+                    <p class="fw-bold text-success">৳{{ product.price }}</p>
 
-                        <div class="d-flex justify-content-between">
-                            <a href="{% url 'product_list' %}" class="btn btn-secondary">⬅️ Back</a>
-                            <button type="submit" class="btn btn-primary">✅ Save Product</button>
-                        </div>
-                    </form>
+                    <div class="mt-auto">
+                        {% if is_admin %}
+                            <a href="{% url 'edit_product' product.id %}" class="btn btn-sm btn-warning">Edit</a>
+                            <a href="{% url 'delete_product' product.id %}" class="btn btn-sm btn-danger">Delete</a>
+                        {% else %}
+                            {% if product.stock > 0 %}
+                            <form method="POST" action="{% url 'add_to_cart' product.id %}">
+                                {% csrf_token %}
+                                <input type="number" name="quantity" min="1" max="{{ product.stock }}" value="1"
+                                       class="form-control form-control-sm mb-2" required>
+                                <button type="submit" class="btn btn-sm btn-success w-100">🛒 Add to Cart</button>
+                            </form>
+                            {% else %}
+                            <button class="btn btn-sm btn-secondary w-100" disabled>Out of Stock</button>
+                            {% endif %}
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>
+        {% endfor %}
     </div>
 </div>
 
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-    const imageInput = document.querySelector('input[type="file"]');
-    const preview = document.getElementById("imagePreview");
+<!-- Full Image Modal -->
+<div id="imageModal" class="modal" onclick="closeImageModal()">
+    <span class="close" onclick="closeImageModal()">&times;</span>
+    <img class="modal-content" id="modalImage">
+    <div id="caption"></div>
+</div>
 
-    if (imageInput) {
-        imageInput.addEventListener("change", function() {
-            const file = this.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    preview.src = e.target.result;
-                }
-                reader.readAsDataURL(file);
-            }
-        });
-    }
-});
+<style>
+/* Product image styling */
+.product-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+.product-image:hover {
+    transform: scale(1.05);
+}
+
+/* Modal styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 999;
+    padding-top: 80px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.9);
+}
+.modal-content {
+    margin: auto;
+    display: block;
+    max-width: 90%;
+    max-height: 80vh;
+}
+#caption {
+    margin: 15px auto;
+    text-align: center;
+    color: #ccc;
+    font-size: 16px;
+}
+.close {
+    position: absolute;
+    top: 25px;
+    right: 35px;
+    color: #fff;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+}
+</style>
+
+<script>
+function openImageModal(src, alt) {
+    document.getElementById("imageModal").style.display = "block";
+    document.getElementById("modalImage").src = src;
+    document.getElementById("caption").innerHTML = alt;
+}
+function closeImageModal() {
+    document.getElementById("imageModal").style.display = "none";
+}
 </script>
+
 {% endblock %}
