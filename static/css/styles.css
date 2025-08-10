@@ -1,12 +1,21 @@
-/* === Global Styling === */
+/* === Global Animated Gradient Background === */
 body {
-    background: linear-gradient(135deg, #f8f9fa, #e8f0ff);
+    min-height: 100vh;
+    background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #a18cd1, #fbc2eb);
+    background-size: 400% 400%;
+    animation: gradientBG 10s ease infinite;
     font-family: 'Poppins', sans-serif;
     color: #333;
-    min-height: 100vh;
     animation: fadeIn 0.8s ease-in;
-    margin: 0;
 }
+
+/* Gradient Animation Keyframes */
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
 
 /* === Navbar Styling === */
 .navbar {
@@ -310,4 +319,55 @@ footer {
 @keyframes fadeInUp {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
+}
+/* Floating Labels */
+.form-group {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.3);
+    border: none;
+    border-radius: 8px;
+    outline: none;
+    color: white;
+    font-size: 1rem;
+}
+
+.form-group label {
+    position: absolute;
+    top: 50%;
+    left: 12px;
+    transform: translateY(-50%);
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+    pointer-events: none;
+    transition: 0.3s ease;
+}
+
+/* Label moves up on focus or when input has value */
+.form-group input:focus + label,
+.form-group input:not(:placeholder-shown) + label {
+    top: -8px;
+    left: 8px;
+    font-size: 0.75rem;
+    color: #ffdfec;
+}
+/* Product list background (same as login) */
+.product-list-body {
+    min-height: 100vh;
+    background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #a18cd1, #fbc2eb);
+    background-size: 400% 400%;
+    animation: gradientBG 10s ease infinite;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+.card, .table {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
