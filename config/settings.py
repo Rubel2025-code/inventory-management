@@ -1,6 +1,9 @@
 import os
 import dj_database_url  # ✅ added for PostgreSQL config
 from pathlib import Path
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -25,7 +28,18 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'inventory',
     'orders',
+    'cloudinary',
+    'cloudinary_storage',
 ]
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'dnmkeonuu',
+    'API_KEY': '739216945962291',
+    'API_SECRET': 'c-0mDhBoNO-IVcpaguaxwlIeuQ0',
+}
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
