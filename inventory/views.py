@@ -74,7 +74,7 @@ def register(request):
             login(request, user)
             return redirect('product_list')
         else:
-            print("❌ Form errors:", form.errors)  # Add this line to debug
+            print("❌ Form errors:", form.errors)  # Debugging output
     else:
-        form = UserCreationForm()
+        form = CustomUserCreationForm()  # ✅ Use custom form here too
     return render(request, 'inventory/register.html', {'form': form})
