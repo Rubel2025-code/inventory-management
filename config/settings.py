@@ -1,22 +1,19 @@
 import os
-import dj_database_url  # ✅ added for PostgreSQL config
 from pathlib import Path
-import cloudinary
-import cloudinary.uploader
-import cloudinary.api
+import dj_database_url  # ✅ PostgreSQL config
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-4#@d_m3r6cdyjt-2ji#y$3_p@_ypjrbh6b$%65gl*--5s@ivh1'
-DEBUG = True
+
+DEBUG = False  # ✅ Set False in production (Render)
 
 ALLOWED_HOSTS = ['inventory-management-begin.onrender.com', '127.0.0.1', 'localhost']
 
-# ✅ Login & Logout redirects
+# ✅ Auth redirects
 LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/login/'
-LOGIN_URL = '/login/'
-LOGOUT_REDIRECT_URL = 'login'  # where to go after logout
+LOGOUT_REDIRECT_URL = 'login'
+LOGIN_URL = 'login'
 
 # ✅ Installed apps
 INSTALLED_APPS = [
@@ -32,18 +29,17 @@ INSTALLED_APPS = [
     'cloudinary_storage',
 ]
 
+# ✅ Cloudinary storage
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': 'dnmkeonuu',
     'API_KEY': '739216945962291',
     'API_SECRET': 'c-0mDhBoNO-IVcpaguaxwlIeuQ0',
 }
-
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # ✅ Serves static files
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -71,14 +67,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-# ✅ PostgreSQL database config (Render provides DATABASE_URL)
-import dj_database_url
-
+# ✅ Database (Render gives DATABASE_URL automatically)
 DATABASES = {
     'default': dj_database_url.config(conn_max_age=600)
 }
-
-
 
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
@@ -97,7 +89,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
-# ✅ Media files
+# ⚠️ Local media config (not used with Cloudinary, but safe to keep for dev)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
