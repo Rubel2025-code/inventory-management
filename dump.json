@@ -1,0 +1,19 @@
+[
+{
+  "model": "auth.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$joJOmLmZUePlx1SXaVdRTm$B6ZWfX8ZsF1lJNj7wWAyqfuTunkXahOgFfGW2WEjlMk=",
+    "last_login": null,
+    "is_superuser": true,
+    "username": "rubel",
+    "first_name": "",
+    "last_name": "",
+    "email": "rubelmahmud779@gmail.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2025-09-01T05:34:07.085Z",
+    "groups": [],
+    "user_permissions": []
+  }
+}
+]
