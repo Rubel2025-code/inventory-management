@@ -4,7 +4,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("inventory", "0002_product_stock"),  # adjust if your last migration has a different name
+        ("inventory", "0007_alter_product_image"),  # adjust if your last migration has a different name
     ]
 
     operations = [
