@@ -23,7 +23,7 @@ from django import forms
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ['name', 'category', 'stock', 'price','image']
+        fields = ['name', 'category', 'stock', 'price','image','supplier_name','supplier_contact']
 @staff_member_required
 def add_product(request):
     if request.method == 'POST':
