@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from django.contrib import messages
 from inventory.models import Product
-from .models import Cart, CartItem, Order
+from .models import Cart, CartItem, Order, OrderItem
 from .forms import PaymentForm
 
 # ✅ Add to Cart
