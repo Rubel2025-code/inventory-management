@@ -90,7 +90,12 @@ def make_payment(request):
                 user=request.user,
                 transaction_number=transaction_number
             )
-            order.items.set(cart_items)
+            for item in cart_items:
+                OrderItem.objects.create(
+                    order=order,
+                    product=item.product,
+                    quantity=item.quantity
+                )
 
             # Deduct stock
             for item in cart_items:
