@@ -6,7 +6,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('orders', '0001_initial'),
-        ('inventory', '0002_alter_cart_user_alter_cartitem_quantity_and_more'),  # adjust if your last inventory migration is different
+        ('inventory', '0003_add_supplier_fields'),  # adjust if your last inventory migration is different
     ]
 
     operations = [
