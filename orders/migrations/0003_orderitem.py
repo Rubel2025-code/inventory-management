@@ -5,8 +5,8 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('orders', '0001_initial'),
-        ('inventory', '0003_add_supplier_fields'),  # adjust if your last inventory migration is different
+        ('orders', '0002_alter_cart_user_alter_cartitem_quantity_and_more'),
+        ('inventory', '0003_add_supplier_fields'),  # adjust if inventory last migration is different
     ]
 
     operations = [
